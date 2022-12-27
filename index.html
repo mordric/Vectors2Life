@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-us">
   <head>
     <meta charset="utf-8">
@@ -31,7 +31,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Jay Murphree",
         productName: "Vectors 2 Life",
-        productVersion: "0.1",
+        productVersion: "0.2",
       };
 
       var container = document.querySelector("#unity-container");
@@ -40,11 +40,15 @@
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var unityInstance = null;
+        var unityInstance = null;
+        var devicePixelRatio = window.devicePixelRatio;
       
 
       canvasContainer.style.width = "650px";
-      canvasContainer.style.height = "730px";
+        canvasContainer.style.height = "730px";
+
+
+
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");
@@ -61,11 +65,29 @@
               unityInstance.SetFullscreen(1);
             };
           }
+            setTimeout(SetSizes, 3000);
+
+
         }).catch((message) => {
           alert(message);
         });
+         
+          //window.addEventListener("resize", SetSizes);
+
+          function SetSizes() {
+              unityInstance.SendMessage("GameManager", "SetDevicePixelRatio", devicePixelRatio);
+              unityInstance.SendMessage("GameManager", "SetHTMLInnerWidth", window.innerWidth);
+
+              unityInstance.SendMessage("GameManager", "SetHTMLInnerHeight", window.innerHeight);
+
+
+              setTimeout(SetSizes,1000)
+              
+          }
+
       };
-      document.body.appendChild(script);
+        document.body.appendChild(script);
+
 
     </script>
   </body>
